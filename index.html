@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CalcUniverse</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -15,543 +17,961 @@
   --border: #1e1e30;
   --text: #eeeeff;
   --muted: #666688;
-  --r: 14px;
 }
 
 body {
   background: var(--bg);
   font-family: 'Outfit', sans-serif;
   color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
 }
 
-/* ─── HERO ─── */
+/* HERO */
 .hero {
   text-align: center;
-  padding: 56px 24px 36px;
-  position: relative;
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, #1a0a3a 0%, transparent 70%);
-  pointer-events: none;
-}
-.hero-badge {
-  display: inline-block;
-  background: linear-gradient(135deg, #7c3aed22, #06b6d422);
-  border: 1px solid #7c3aed44;
-  color: #a78bfa;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 6px 16px;
-  border-radius: 99px;
-  margin-bottom: 18px;
-  animation: fadeDown 0.6s ease both;
+  padding: 60px 20px;
 }
 .hero h1 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(3rem, 10vw, 6rem);
-  letter-spacing: 0.04em;
-  line-height: 1;
-  background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #06b6d4 100%);
+  font-family: 'Bebas Neue';
+  font-size: 4rem;
+  background: linear-gradient(135deg,#fff,#a78bfa,#06b6d4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: fadeDown 0.6s 0.1s ease both;
 }
 .hero p {
   color: var(--muted);
-  font-size: 1rem;
   margin-top: 10px;
-  animation: fadeDown 0.6s 0.2s ease both;
-}
-@keyframes fadeDown {
-  from { opacity: 0; transform: translateY(-16px); }
-  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ─── LAYOUT ─── */
+/* LAYOUT */
 .app {
   display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 0;
+  grid-template-columns: 260px 1fr;
   max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 20px 80px;
-  min-height: 70vh;
+  margin: auto;
 }
 
-/* ─── SIDEBAR ─── */
+/* SIDEBAR */
 .sidebar {
-  padding-right: 20px;
   border-right: 1px solid var(--border);
+  padding: 20px;
 }
-
-.category-block {
-  margin-bottom: 8px;
-  opacity: 0;
-  transform: translateX(-30px);
-  animation: slideIn 0.5s ease forwards;
-}
-@keyframes slideIn {
-  to { opacity: 1; transform: translateX(0); }
-}
-
-.cat-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px 8px;
-  cursor: pointer;
-  border-radius: 10px;
-  transition: background 0.2s;
-  user-select: none;
-}
-.cat-header:hover { background: #ffffff08; }
-.cat-icon { font-size: 1rem; }
-.cat-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  flex: 1;
-}
-.cat-arrow {
-  font-size: 0.65rem;
-  color: var(--muted);
-  transition: transform 0.3s;
-}
-.category-block.open .cat-arrow { transform: rotate(90deg); }
-
-.cat-items {
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
-}
-.category-block.open .cat-items { max-height: 600px; }
 
 .nav-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 12px 9px 28px;
-  border-radius: 10px;
+  padding: 10px;
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
+  border-radius: 8px;
   color: var(--muted);
-  transition: all 0.2s;
-  opacity: 0;
-  transform: translateX(-20px);
-  border: 1px solid transparent;
-  margin-bottom: 2px;
 }
-.nav-item.visible {
-  animation: itemSlide 0.35s ease forwards;
-}
-@keyframes itemSlide {
-  to { opacity: 1; transform: translateX(0); }
-}
-.nav-item:hover {
-  background: #ffffff0a;
-  color: var(--text);
-}
-.nav-item.active {
-  background: var(--surface);
-  border-color: var(--border);
-  color: var(--text);
-}
-.nav-item.active .item-dot { background: var(--active-color, #7c3aed); box-shadow: 0 0 8px var(--active-color, #7c3aed); }
-.item-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--border);
-  flex-shrink: 0;
-  transition: all 0.3s;
-}
-.item-emoji { font-size: 1rem; }
-.item-name { flex: 1; }
+.nav-item:hover { background: #ffffff10; color: #fff; }
+.nav-item.active { background: #14141f; color: #fff; }
 
-/* ─── CONTENT ─── */
+/* CONTENT */
 .content {
-  padding-left: 32px;
+  padding: 30px;
 }
 
-.calc-panel {
-  display: none;
-  animation: panelIn 0.4s cubic-bezier(0.34,1.2,0.64,1) both;
-}
+.calc-panel { display: none; }
 .calc-panel.active { display: block; }
-@keyframes panelIn {
-  from { opacity: 0; transform: translateY(20px) scale(0.98); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
 
-/* ─── PANEL HEADER ─── */
-.panel-header {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 32px;
-  padding-top: 4px;
-}
-.panel-icon-wrap {
-  width: 56px; height: 56px;
-  border-radius: 16px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.6rem;
-  flex-shrink: 0;
-}
-.panel-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2rem;
-  letter-spacing: 0.05em;
-  line-height: 1;
-}
-.panel-desc { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
-
-/* ─── FORM ─── */
-.field { margin-bottom: 16px; }
-.field label {
-  display: block;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 6px;
-}
-.field input, .field select {
+/* INPUT */
+input, select {
   width: 100%;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 11px 14px;
-  border-radius: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.95rem;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  padding: 10px;
+  background: #111;
+  border: 1px solid #222;
+  color: #fff;
+  margin-bottom: 10px;
+  border-radius: 8px;
 }
-.field input:focus, .field select:focus {
-  border-color: var(--accent, #7c3aed);
-  box-shadow: 0 0 0 3px var(--accent-glow, #7c3aed22);
-}
-.field select option { background: #1a1a2e; }
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
 
-/* ─── BUTTON ─── */
-.go-btn {
-  width: 100%;
-  padding: 13px;
-  border: none;
-  border-radius: 12px;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.2rem;
-  letter-spacing: 0.1em;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 6px;
-  position: relative;
-  overflow: hidden;
-}
-.go-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #ffffff22, transparent);
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-.go-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--btn-glow, #7c3aed44); }
-.go-btn:hover::after { opacity: 1; }
-.go-btn:active { transform: translateY(0); }
-
-/* ─── RESULT ─── */
-.result-box {
-  margin-top: 20px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
-  display: none;
-}
-.result-box.show { display: block; animation: panelIn 0.4s ease both; }
-.result-lbl { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-.result-val {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--accent, #7c3aed);
-  margin-bottom: 14px;
-}
-.result-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.rg-item {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+/* BUTTON */
+button {
   padding: 12px;
-}
-.rg-val { font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 600; }
-.rg-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
-.result-note { font-size: 0.78rem; color: var(--muted); margin-top: 12px; line-height: 1.6; white-space: pre-line; }
-
-/* ─── STUDENT CALC ─── */
-.s-display {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 18px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 1.8rem;
-  text-align: right;
-  min-height: 60px;
-  color: var(--text);
-  word-break: break-all;
-  margin-bottom: 12px;
-}
-.keypad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-.key {
-  padding: 14px 8px;
-  border: 1px solid var(--border);
+  width: 100%;
+  border: none;
+  background: #7c3aed;
+  color: white;
   border-radius: 10px;
-  background: var(--card);
-  color: var(--text);
-  font-family: 'Outfit', sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s;
-}
-.key:hover { background: #1e1e35; transform: scale(0.96); }
-.key.op { color: #a78bfa; }
-.key.eq { background: linear-gradient(135deg, #7c3aed, #5b21b6); border-color: transparent; color: #fff; }
-.key.clr { color: #f87171; }
-
-/* ─── LOVE ─── */
-.love-bar-bg { background: var(--card); border-radius: 99px; height: 24px; overflow: hidden; border: 1px solid var(--border); margin-top: 12px; }
-.love-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #ec4899, #f43f5e); transition: width 1s cubic-bezier(0.34,1.56,0.64,1); width: 0; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; font-size: 0.75rem; font-weight: 700; color: #fff; }
-.love-emoji-big { font-size: 2.5rem; text-align: center; margin: 10px 0; animation: pulse 0.8s ease infinite alternate; }
-@keyframes pulse { to { transform: scale(1.2); } }
-
-/* ─── COLORS ─── */
-.theme-finance { --accent: #10b981; --accent-glow: #10b98122; --btn-glow: #10b98144; }
-.theme-finance .go-btn { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
-.theme-finance .panel-icon-wrap { background: #10b98120; }
-
-.theme-health { --accent: #06b6d4; --accent-glow: #06b6d422; --btn-glow: #06b6d444; }
-.theme-health .go-btn { background: linear-gradient(135deg, #06b6d4, #0284c7); color: #fff; }
-.theme-health .panel-icon-wrap { background: #06b6d420; }
-
-.theme-tax { --accent: #f59e0b; --accent-glow: #f59e0b22; --btn-glow: #f59e0b44; }
-.theme-tax .go-btn { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; }
-.theme-tax .panel-icon-wrap { background: #f59e0b20; }
-
-.theme-fun { --accent: #ec4899; --accent-glow: #ec489922; --btn-glow: #ec489944; }
-.theme-fun .go-btn { background: linear-gradient(135deg, #ec4899, #db2777); color: #fff; }
-.theme-fun .panel-icon-wrap { background: #ec489920; }
-
-.theme-creator { --accent: #ff6b35; --accent-glow: #ff6b3522; --btn-glow: #ff6b3544; }
-.theme-creator .go-btn { background: linear-gradient(135deg, #ff6b35, #ea580c); color: #fff; }
-.theme-creator .panel-icon-wrap { background: #ff6b3520; }
-
-.theme-tech { --accent: #84cc16; --accent-glow: #84cc1622; --btn-glow: #84cc1644; }
-.theme-tech .go-btn { background: linear-gradient(135deg, #84cc16, #65a30d); color: #000; }
-.theme-tech .panel-icon-wrap { background: #84cc1620; }
-
-.theme-utility { --accent: #a78bfa; --accent-glow: #a78bfa22; --btn-glow: #a78bfa44; }
-.theme-utility .go-btn { background: linear-gradient(135deg, #7c3aed, #5b21b6); color: #fff; }
-.theme-utility .panel-icon-wrap { background: #7c3aed20; }
-
-/* category colors in sidebar */
-.c-finance .cat-label { color: #10b981; }
-.c-health .cat-label { color: #06b6d4; }
-.c-tax .cat-label { color: #f59e0b; }
-.c-fun .cat-label { color: #ec4899; }
-.c-creator .cat-label { color: #ff6b35; }
-.c-tech .cat-label { color: #84cc16; }
-.c-utility .cat-label { color: #a78bfa; }
-
-.c-finance .cat-icon, .c-finance.open .cat-arrow { color: #10b981; }
-.c-health .cat-icon, .c-health.open .cat-arrow { color: #06b6d4; }
-.c-tax .cat-icon, .c-tax.open .cat-arrow { color: #f59e0b; }
-.c-fun .cat-icon, .c-fun.open .cat-arrow { color: #ec4899; }
-.c-creator .cat-icon, .c-creator.open .cat-arrow { color: #ff6b35; }
-.c-tech .cat-icon, .c-tech.open .cat-arrow { color: #84cc16; }
-.c-utility .cat-icon, .c-utility.open .cat-arrow { color: #a78bfa; }
-
-/* disclaimer */
-.disc { font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 10px; }
-
-/* mobile */
-@media (max-width: 640px) {
-  .app { grid-template-columns: 1fr; }
-  .sidebar { border-right: none; border-bottom: 1px solid var(--border); padding: 0 0 16px; margin-bottom: 24px; padding-right: 0; }
-  .content { padding-left: 0; }
-  .row2, .row3 { grid-template-columns: 1fr; }
-  .result-grid { grid-template-columns: 1fr; }
 }
 
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+/* RESULT */
+.result {
+  margin-top: 15px;
+  font-size: 1.2rem;
+}
 </style>
 </head>
+
 <body>
 
 <div class="hero">
-  <div class="hero-badge">⚡ All-in-One Calculator Suite</div>
   <h1>CalcUniverse</h1>
-  <p>14 calculators · 7 categories · One app</p>
+  <p>All-in-one calculator app</p>
 </div>
 
 <div class="app">
 
-  <!-- ═══════════════ SIDEBAR ═══════════════ -->
-  <nav class="sidebar" id="sidebar"></nav>
+<div class="sidebar" id="sidebar"></div>
 
-  <!-- ═══════════════ CONTENT ═══════════════ -->
-  <div class="content">
+<div class="content">
+  <!-- EMI -->
+<div class="calc-panel" id="p-emi">
+  <h2>EMI Calculator</h2>
 
-    <!-- FINANCE -->
-    <div class="calc-panel theme-finance" id="p-emi">
-      <div class="panel-header">
-        <div class="panel-icon-wrap">🏦</div>
-        <div><div class="panel-title">EMI Calculator</div><div class="panel-desc">Monthly loan EMI — Home, Car, Personal</div></div>
+  <input id="emi-p" type="number" placeholder="Loan Amount (₹)" value="500000">
+  <input id="emi-r" type="number" placeholder="Interest Rate (%)" value="8.5">
+  <input id="emi-t" type="number" placeholder="Years" value="20">
+
+  <button onclick="calcEMI()">Calculate EMI</button>
+
+  <div class="result" id="r-emi"></div>
+</div>
+
+<!-- SIP -->
+<div class="calc-panel" id="p-sip">
+  <h2>SIP Calculator</h2>
+
+  <input id="sip-m" type="number" placeholder="Monthly Investment" value="5000">
+  <input id="sip-r" type="number" placeholder="Return %" value="12">
+  <input id="sip-t" type="number" placeholder="Years" value="10">
+
+  <button onclick="calcSIP()">Calculate Returns</button>
+
+  <div class="result" id="r-sip"></div>
+</div>
+
+<!-- LOAN INTEREST -->
+<div class="calc-panel" id="p-loan">
+  <h2>Loan Interest</h2>
+
+  <input id="li-p" type="number" placeholder="Principal" value="100000">
+  <input id="li-r" type="number" placeholder="Rate %" value="10">
+  <input id="li-t" type="number" placeholder="Years" value="3">
+
+  <select id="li-type">
+    <option value="s">Simple</option>
+    <option value="c">Compound</option>
+  </select>
+
+  <button onclick="calcLI()">Calculate</button>
+
+  <div class="result" id="r-loan"></div>
+</div>
+<!-- GST CALCULATOR -->
+<div class="calc-panel" id="p-gst">
+  <h2>GST Calculator</h2>
+
+  <input id="gst-a" type="number" placeholder="Amount (₹)" value="1000">
+
+  <select id="gst-r">
+    <option value="5">5%</option>
+    <option value="12">12%</option>
+    <option value="18" selected>18%</option>
+    <option value="28">28%</option>
+  </select>
+
+  <select id="gst-m">
+    <option value="add">Add GST</option>
+    <option value="rem">Remove GST</option>
+  </select>
+
+  <button onclick="calcGST()">Calculate GST</button>
+
+  <div class="result" id="r-gst"></div>
+</div>
+
+
+<!-- INCOME TAX -->
+<div class="calc-panel" id="p-tax">
+  <h2>Income Tax (India)</h2>
+
+  <input id="tx-inc" type="number" placeholder="Annual Income" value="800000">
+
+  <select id="tx-reg">
+    <option value="new">New Regime</option>
+    <option value="old">Old Regime</option>
+  </select>
+
+  <input id="tx-ded" type="number" placeholder="Deductions (Old regime only)" value="150000">
+
+  <button onclick="calcTax()">Calculate Tax</button>
+
+  <div class="result" id="r-tax"></div>
+</div>
+
+
+<!-- LOAN ELIGIBILITY -->
+<div class="calc-panel" id="p-eligibility">
+  <h2>Loan Eligibility</h2>
+
+  <input id="el-inc" type="number" placeholder="Monthly Income" value="60000">
+  <input id="el-emi" type="number" placeholder="Existing EMI" value="0">
+  <input id="el-r" type="number" placeholder="Interest Rate %" value="8.5">
+  <input id="el-t" type="number" placeholder="Years" value="20">
+
+  <button onclick="calcElig()">Check Eligibility</button>
+
+  <div class="result" id="r-elig"></div>
+</div>
+<!-- BMI CALCULATOR -->
+<div class="calc-panel" id="p-bmi">
+  <h2>BMI Calculator</h2>
+
+  <input id="bmi-h" type="number" placeholder="Height (cm)" value="170">
+  <input id="bmi-w" type="number" placeholder="Weight (kg)" value="70">
+
+  <button onclick="calcBMI()">Calculate BMI</button>
+
+  <div class="result" id="r-bmi"></div>
+</div>
+
+
+<!-- AGE CALCULATOR -->
+<div class="calc-panel" id="p-age">
+  <h2>Age Calculator</h2>
+
+  <input id="age-dob" type="date">
+
+  <button onclick="calcAge()">Calculate Age</button>
+
+  <div class="result" id="r-age"></div>
+</div>
+
+
+<!-- LOVE COMPATIBILITY -->
+<div class="calc-panel" id="p-love">
+  <h2>Love Calculator ❤️</h2>
+
+  <input id="love1" type="text" placeholder="Your Name">
+  <input id="love2" type="text" placeholder="Partner Name">
+
+  <button onclick="calcLove()">Check Love %</button>
+
+  <div class="result" id="r-love"></div>
+</div>
+<!-- YOUTUBE MONEY -->
+<div class="calc-panel" id="p-yt">
+  <h2>YouTube Earnings 💰</h2>
+
+  <input id="yt-views" type="number" placeholder="Monthly Views" value="100000">
+  <input id="yt-cpm" type="number" placeholder="CPM ($ per 1000 views)" value="2">
+
+  <button onclick="calcYT()">Calculate Earnings</button>
+
+  <div class="result" id="r-yt"></div>
+</div>
+
+
+<!-- INSTAGRAM EARNINGS -->
+<div class="calc-panel" id="p-ig">
+  <h2>Instagram Earnings 📸</h2>
+
+  <input id="ig-followers" type="number" placeholder="Followers" value="10000">
+  <input id="ig-eng" type="number" placeholder="Engagement (%)" value="5">
+
+  <button onclick="calcIG()">Estimate Earnings</button>
+
+  <div class="result" id="r-ig"></div>
+</div>
+
+
+<!-- AI API COST -->
+<div class="calc-panel" id="p-ai">
+  <h2>AI API Cost 🤖</h2>
+
+  <input id="ai-tokens" type="number" placeholder="Tokens per request" value="1000">
+  <input id="ai-req" type="number" placeholder="Requests per day" value="100">
+  <input id="ai-price" type="number" placeholder="Cost per 1K tokens ($)" value="0.002">
+
+  <button onclick="calcAI()">Calculate Cost</button>
+
+  <div class="result" id="r-ai"></div>
+</div>
+<!-- STUDENT CALCULATOR -->
+<div class="calc-panel" id="p-student">
+  <h2>Student Calculator 🧮</h2>
+
+  <div id="s-display" style="
+    background:#111;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:10px;
+    text-align:right;
+    font-size:1.5rem;
+  ">0</div>
+
+  <div style="
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+  ">
+
+    <!-- ROW 1 -->
+    <button onclick="press('7')">7</button>
+    <button onclick="press('8')">8</button>
+    <button onclick="press('9')">9</button>
+    <button onclick="press('/')">÷</button>
+
+    <!-- ROW 2 -->
+    <button onclick="press('4')">4</button>
+    <button onclick="press('5')">5</button>
+    <button onclick="press('6')">6</button>
+    <button onclick="press('*')">×</button>
+
+    <!-- ROW 3 -->
+    <button onclick="press('1')">1</button>
+    <button onclick="press('2')">2</button>
+    <button onclick="press('3')">3</button>
+    <button onclick="press('-')">−</button>
+
+    <!-- ROW 4 -->
+    <button onclick="press('0')">0</button>
+    <button onclick="press('.')">.</button>
+    <button onclick="calculate()">=</button>
+    <button onclick="press('+')">+</button>
+
+    <!-- ROW 5 -->
+    <button onclick="clearDisplay()" style="grid-column:span 4; background:#f43f5e;">
+      Clear
+    </button>
+
+  </div>
+</div>
+<script>
+/* ───────────── SIDEBAR DATA ───────────── */
+const CALCS = [
+  {
+    category: "Finance 💰",
+    items: [
+      { id: "p-emi", name: "EMI", emoji: "🏦" },
+      { id: "p-sip", name: "SIP", emoji: "📈" },
+      { id: "p-loan", name: "Loan Interest", emoji: "💳" },
+      { id: "p-eligibility", name: "Eligibility", emoji: "🏠" }
+    ]
+  },
+  {
+    category: "Tax 🧾",
+    items: [
+      { id: "p-gst", name: "GST", emoji: "🧾" },
+      { id: "p-tax", name: "Income Tax", emoji: "🇮🇳" }
+    ]
+  },
+  {
+    category: "Health 🧍",
+    items: [
+      { id: "p-bmi", name: "BMI", emoji: "⚖️" },
+      { id: "p-age", name: "Age", emoji: "🎂" }
+    ]
+  },
+  {
+    category: "Fun ❤️",
+    items: [
+      { id: "p-love", name: "Love %", emoji: "❤️" }
+    ]
+  },
+  {
+    category: "Creator 📸",
+    items: [
+      { id: "p-yt", name: "YouTube Money", emoji: "💰" },
+      { id: "p-ig", name: "Instagram", emoji: "📸" }
+    ]
+  },
+  {
+    category: "Tech 🤖",
+    items: [
+      { id: "p-ai", name: "AI Cost", emoji: "🤖" }
+    ]
+  },
+  {
+    category: "Utility 🧮",
+    items: [
+      { id: "p-student", name: "Student Calc", emoji: "🧮" }
+    ]
+  }
+];
+
+/* ───────────── BUILD SIDEBAR ───────────── */
+const sidebar = document.getElementById("sidebar");
+
+CALCS.forEach(cat => {
+  const div = document.createElement("div");
+
+  div.innerHTML = `
+    <h3 style="margin-top:15px;color:#888;font-size:12px;">
+      ${cat.category}
+    </h3>
+    ${cat.items.map(i => `
+      <div class="nav-item" data-target="${i.id}">
+        ${i.emoji} ${i.name}
       </div>
-      <div class="row3">
-        <div class="field"><label>Principal (₹)</label><input id="emi-p" type="number" value="500000"></div>
-        <div class="field"><label>Rate % p.a.</label><input id="emi-r" type="number" value="8.5" step="0.1"></div>
-        <div class="field"><label>Tenure (Yrs)</label><input id="emi-t" type="number" value="20"></div>
-      </div>
-      <button class="go-btn" onclick="calcEMI()">CALCULATE EMI →</button>
-      <div class="result-box" id="r-emi">
-        <div class="result-lbl">Monthly EMI</div>
-        <div class="result-val" id="rv-emi"></div>
-        <div class="result-grid">
-          <div class="rg-item"><div class="rg-val" id="rv-emi-total"></div><div class="rg-lbl">Total Paid</div></div>
-          <div class="rg-item"><div class="rg-val" id="rv-emi-int"></div><div class="rg-lbl">Total Interest</div></div>
-        </div>
-      </div>
+    `).join("")}
+  `;
+
+  sidebar.appendChild(div);
+});
+
+/* ───────────── NAV CLICK ───────────── */
+document.querySelectorAll(".nav-item").forEach(item => {
+  item.onclick = () => {
+    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+    item.classList.add("active");
+
+    document.querySelectorAll(".calc-panel").forEach(p => p.classList.remove("active"));
+    document.getElementById(item.dataset.target).classList.add("active");
+  };
+});
+
+/* DEFAULT OPEN */
+document.querySelector(".nav-item")?.click();
+</script>
+<script>
+
+/* ───────── EMI ───────── */
+function calcEMI() {
+  let P = +emi-p.value;
+  let r = +emi-r.value / 12 / 100;
+  let n = +emi-t.value * 12;
+
+  let emi = (P*r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+
+  r_emi.innerText = "EMI: ₹ " + Math.round(emi);
+}
+
+/* ───────── SIP ───────── */
+function calcSIP() {
+  let m = +sip-m.value;
+  let r = +sip-r.value / 12 / 100;
+  let n = +sip-t.value * 12;
+
+  let fv = m * ((Math.pow(1+r,n)-1)/r)*(1+r);
+
+  r_sip.innerText = "Future Value: ₹ " + Math.round(fv);
+}
+
+/* ───────── LOAN ───────── */
+function calcLI() {
+  let P = +li-p.value;
+  let r = +li-r.value / 100;
+  let t = +li-t.value;
+
+  let interest = li-type.value === "s"
+    ? P*r*t
+    : P*(Math.pow(1+r,t)-1);
+
+  r_loan.innerText = "Interest: ₹ " + Math.round(interest);
+}
+
+/* ───────── GST ───────── */
+function calcGST() {
+  let a = +gst-a.value;
+  let r = +gst-r.value/100;
+
+  let res = gst-m.value === "add"
+    ? a + (a*r)
+    : a/(1+r);
+
+  r_gst.innerText = "Result: ₹ " + Math.round(res);
+}
+
+/* ───────── TAX ───────── */
+function calcTax() {
+  let inc = +tx-inc.value;
+  let tax = 0;
+
+  if (inc > 300000) tax += (inc-300000)*0.05;
+
+  tax *= 1.04;
+
+  r_tax.innerText = "Tax: ₹ " + Math.round(tax);
+}
+
+/* ───────── ELIGIBILITY ───────── */
+function calcElig() {
+  let inc = +el-inc.value;
+  let emi = +el-emi.value;
+
+  let eligible = (inc*0.4 - emi) * 100;
+
+  r_elig.innerText = "Eligible Loan: ₹ " + Math.round(eligible);
+}
+
+/* ───────── BMI ───────── */
+function calcBMI() {
+  let h = +bmi-h.value / 100;
+  let w = +bmi-w.value;
+
+  let bmi = w / (h*h);
+
+  r_bmi.innerText = "BMI: " + bmi.toFixed(2);
+}
+
+/* ───────── AGE ───────── */
+function calcAge() {
+  let dob = new Date(age-dob.value);
+  let now = new Date();
+
+  let age = now.getFullYear() - dob.getFullYear();
+
+  r_age.innerText = "Age: " + age;
+}
+
+/* ───────── LOVE ───────── */
+function calcLove() {
+  let a = love1.value.length;
+  let b = love2.value.length;
+
+  let score = (a * b) % 100;
+
+  r_love.innerText = "Love: " + score + "% ❤️";
+}
+
+/* ───────── YOUTUBE ───────── */
+function calcYT() {
+  let views = +yt-views.value;
+  let cpm = +yt-cpm.value;
+
+  let earn = (views/1000)*cpm;
+
+  r_yt.innerText = "$ " + earn.toFixed(2);
+}
+
+/* ───────── INSTAGRAM ───────── */
+function calcIG() {
+  let f = +ig-followers.value;
+  let e = +ig-eng.value;
+
+  let earn = (f * (e/100)) * 0.02;
+
+  r_ig.innerText = "$ " + earn.toFixed(2);
+}
+
+/* ───────── AI COST ───────── */
+function calcAI() {
+  let t = +ai-tokens.value;
+  let r = +ai-req.value;
+  let p = +ai-price.value;
+
+  let cost = (t/1000)*r*p*30;
+
+  r_ai.innerText = "$ " + cost.toFixed(2) + " / month";
+}
+
+/* ───────── STUDENT CALC ───────── */
+let exp = "";
+
+function press(val) {
+  exp += val;
+  document.getElementById("s-display").innerText = exp;
+}
+
+function calculate() {
+  try {
+    exp = eval(exp).toString();
+  } catch {
+    exp = "Error";
+  }
+  document.getElementById("s-display").innerText = exp;
+}
+
+function clearDisplay() {
+  exp = "";
+  document.getElementById("s-display").innerText = "0";
+}
+
+</script>
+<script>
+
+/* ───────── AUTO FORMAT INPUT (no negative / clean) ───────── */
+document.querySelectorAll("input").forEach(inp => {
+  inp.addEventListener("input", () => {
+    if (inp.type === "number" && inp.value < 0) {
+      inp.value = 0;
+    }
+  });
+});
+
+/* ───────── ENTER KEY SUPPORT ───────── */
+document.querySelectorAll("input").forEach(inp => {
+  inp.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+      const panel = this.closest(".calc-panel");
+      panel.querySelector("button")?.click();
+    }
+  });
+});
+
+/* ───────── SMOOTH PANEL SWITCH ───────── */
+document.querySelectorAll(".nav-item").forEach(item => {
+  item.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+});
+
+/* ───────── RESULT ANIMATION ───────── */
+function animateResult(el) {
+  el.style.opacity = 0;
+  el.style.transform = "translateY(10px)";
+
+  setTimeout(() => {
+    el.style.transition = "all 0.3s ease";
+    el.style.opacity = 1;
+    el.style.transform = "translateY(0)";
+  }, 50);
+}
+
+/* Hook animation to all results */
+const oldSetText = (el, text) => {
+  el.innerText = text;
+  animateResult(el);
+};
+
+/* Patch result setters dynamically */
+[
+  "r_emi","r_sip","r_loan","r_gst","r_tax",
+  "r_elig","r_bmi","r_age","r_love",
+  "r_yt","r_ig","r_ai"
+].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    const observer = new MutationObserver(() => animateResult(el));
+    observer.observe(el, { childList: true });
+  }
+});
+
+/* ───────── DEFAULT ACTIVE PANEL SAFETY ───────── */
+window.addEventListener("load", () => {
+  const first = document.querySelector(".nav-item");
+  if (first) first.click();
+});
+
+/* ───────── SMALL MOBILE IMPROVEMENT ───────── */
+if (window.innerWidth < 640) {
+  document.querySelectorAll(".nav-item").forEach(item => {
+    item.addEventListener("click", () => {
+      document.querySelector(".sidebar").scrollIntoView({
+        behavior: "smooth"
+      });
+    });
+  });
+}
+
+</script>
+<script>
+
+/* ─────────────────────────────
+   SIDEBAR CONFIG (ALL CALCS)
+─────────────────────────────*/
+const CATEGORIES = [
+  {
+    name: "Finance",
+    icon: "💰",
+    class: "c-finance",
+    items: [
+      ["EMI Calculator","p-emi","🏦"],
+      ["SIP Calculator","p-sip","📈"],
+      ["Loan Interest","p-loan","💳"],
+      ["Loan Eligibility","p-eligibility","🏠"]
+    ]
+  },
+  {
+    name: "Tax",
+    icon: "🧾",
+    class: "c-tax",
+    items: [
+      ["GST Calculator","p-gst","🧾"],
+      ["Income Tax","p-tax","🇮🇳"]
+    ]
+  },
+  {
+    name: "Health",
+    icon: "🧍",
+    class: "c-health",
+    items: [
+      ["BMI Calculator","p-bmi","⚖️"]
+    ]
+  },
+  {
+    name: "Utility",
+    icon: "🛠️",
+    class: "c-utility",
+    items: [
+      ["Age Calculator","p-age","🎂"],
+      ["Student Calculator","p-student","🎓"]
+    ]
+  },
+  {
+    name: "Fun",
+    icon: "❤️",
+    class: "c-fun",
+    items: [
+      ["Love Calculator","p-love","❤️"]
+    ]
+  },
+  {
+    name: "Creator",
+    icon: "📸",
+    class: "c-creator",
+    items: [
+      ["YouTube Money","p-yt","📺"],
+      ["Instagram Earnings","p-ig","📸"]
+    ]
+  },
+  {
+    name: "Tech",
+    icon: "🤖",
+    class: "c-tech",
+    items: [
+      ["AI API Cost","p-ai","🤖"]
+    ]
+  }
+];
+
+
+/* ─────────────────────────────
+   BUILD SIDEBAR
+─────────────────────────────*/
+const sidebar = document.getElementById("sidebar");
+
+CATEGORIES.forEach((cat, ci) => {
+
+  const block = document.createElement("div");
+  block.className = `category-block ${cat.class}`;
+  block.style.animationDelay = `${ci * 0.08}s`;
+
+  block.innerHTML = `
+    <div class="cat-header">
+      <div class="cat-icon">${cat.icon}</div>
+      <div class="cat-label">${cat.name}</div>
+      <div class="cat-arrow">▶</div>
     </div>
+    <div class="cat-items"></div>
+  `;
 
-    <div class="calc-panel theme-finance" id="p-sip">
-      <div class="panel-header">
-        <div class="panel-icon-wrap">📈</div>
-        <div><div class="panel-title">SIP Calculator</div><div class="panel-desc">Mutual fund SIP wealth projection</div></div>
-      </div>
-      <div class="row3">
-        <div class="field"><label>Monthly SIP (₹)</label><input id="sip-m" type="number" value="5000"></div>
-        <div class="field"><label>Return % p.a.</label><input id="sip-r" type="number" value="12" step="0.5"></div>
-        <div class="field"><label>Duration (Yrs)</label><input id="sip-t" type="number" value="10"></div>
-      </div>
-      <button class="go-btn" onclick="calcSIP()">CALCULATE WEALTH →</button>
-      <div class="result-box" id="r-sip">
-        <div class="result-lbl">Estimated Corpus</div>
-        <div class="result-val" id="rv-sip"></div>
-        <div class="result-grid">
-          <div class="rg-item"><div class="rg-val" id="rv-sip-inv"></div><div class="rg-lbl">Invested</div></div>
-          <div class="rg-item"><div class="rg-val" id="rv-sip-gain"></div><div class="rg-lbl">Wealth Gained</div></div>
-        </div>
-      </div>
-    </div>
+  const itemsWrap = block.querySelector(".cat-items");
 
-    <div class="calc-panel theme-finance" id="p-loan">
-      <div class="panel-header">
-        <div class="panel-icon-wrap">💳</div>
-        <div><div class="panel-title">Loan Interest</div><div class="panel-desc">Simple & Compound interest calculator</div></div>
-      </div>
-      <div class="row2">
-        <div class="field"><label>Principal (₹)</label><input id="li-p" type="number" value="100000"></div>
-        <div class="field"><label>Rate % p.a.</label><input id="li-r" type="number" value="10" step="0.1"></div>
-      </div>
-      <div class="row2">
-        <div class="field"><label>Time (Years)</label><input id="li-t" type="number" value="3"></div>
-        <div class="field"><label>Type</label><select id="li-type"><option value="s">Simple Interest</option><option value="c">Compound Interest</option></select></div>
-      </div>
-      <button class="go-btn" onclick="calcLI()">CALCULATE →</button>
-      <div class="result-box" id="r-loan">
-        <div class="result-grid">
-          <div class="rg-item"><div class="rg-val" id="rv-li-int"></div><div class="rg-lbl">Interest Amount</div></div>
-          <div class="rg-item"><div class="rg-val" id="rv-li-total"></div><div class="rg-lbl">Total Payable</div></div>
-        </div>
-      </div>
-    </div>
+  cat.items.forEach(([name,id,emoji], i) => {
+    const el = document.createElement("div");
+    el.className = "nav-item";
+    el.innerHTML = `
+      <div class="item-dot"></div>
+      <div class="item-emoji">${emoji}</div>
+      <div class="item-name">${name}</div>
+    `;
 
-    <div class="calc-panel theme-tax" id="p-eligibility">
-      <div class="panel-header">
-        <div class="panel-icon-wrap">🏠</div>
-        <div><div class="panel-title">Loan Eligibility</div><div class="panel-desc">Max loan amount you qualify for</div></div>
-      </div>
-      <div class="row2">
-        <div class="field"><label>Monthly Income (₹)</label><input id="el-inc" type="number" value="60000"></div>
-        <div class="field"><label>Existing EMIs (₹)</label><input id="el-emi" type="number" value="0"></div>
-      </div>
-      <div class="row2">
-        <div class="field"><label>Rate % p.a.</label><input id="el-r" type="number" value="8.5" step="0.1"></div>
-        <div class="field"><label>Tenure (Yrs)</label><input id="el-t" type="number" value="20"></div>
-      </div>
-      <button class="go-btn" onclick="calcElig()">CHECK ELIGIBILITY →</button>
-      <div class="result-box" id="r-elig">
-        <div class="result-lbl">Max Loan Amount</div>
-        <div class="result-val" id="rv-elig"></div>
-        <div class="result-note" id="rv-elig-note"></div>
-      </div>
-    </div>
+    el.onclick = () => openPanel(id, el);
 
-    <!-- GST -->
-    <div class="calc-panel theme-tax" id="p-gst">
-      <div class="panel-header">
-        <div class="panel-icon-wrap">🧾</div>
-        <div><div class="panel-title">GST Calculator</div><div class="panel-desc">Add or remove GST from any amount</div></div>
-      </div>
-      <div class="row2">
-        <div class="field"><label>Amount (₹)</label><input id="gst-a" type="number" value="1000"></div>
-        <div class="field"><label>GST Slab</label><select id="gst-r"><option value="5">5%</option><option value="12">12%</option><option value="18" selected>18%</option><option value="28">28%</option></select></div>
-      </div>
-      <div class="field"><label>Mode</label><select id="gst-m"><option value="add">Add GST (Ex → Inc)</option><option value="rem">Remove GST (Inc → Ex)</option></select></div>
-      <button class="go-btn" onclick="calcGST()">CALCULATE GST →</button>
-      <div class="result-box" id="r-gst">
-        <div class="result-grid">
-          <div class="rg-item"><div class="rg-val" id="rv-gst-pre"></div><div class="rg-lbl">Pre-GST</div></div>
-          <div class="rg-item"><div class="rg-val" id="rv-gst-tax"></div><div class="rg-lbl">GST Amount</div></div>
-          <div class="rg-item" style="grid-column:span 2"><div class="rg-val" id="rv-gst-post" style="color:var(--accent)"></div><div class="rg-lbl">Final Amount</div></div>
-        </div>
-      </div>
-    </div>
+    setTimeout(()=> el.classList.add("visible"), 100 + i*60);
 
-    <!-- TAX -->
-    <div class="calc-panel theme-tax" id="p-tax">
-      <div class="panel-header">
-        <div class="panel-icon-wrap">🇮🇳</div>
-        <div><div class="panel-title">Income Tax</div><div class="panel-desc">India FY 2024-25 — Old & New Regime</div></div>
-      </div>
-      <div class="row2">
-        <div class="field"><label>Annual Income (₹)</label><input id="tx-inc" type="number" value="800000"></div>
-        <div class="field"><label>Regime</label><select id="tx-reg" onchange="toggleDed()"><option value="new">New Regime</option><option value="old">Old Regime</option></select></div>
-      </div>
-      <div class="field" id="ded-field" style="display:none"><label>80C + Deductions (₹)</label><input id="tx-ded" type="number" value="150000"></div>
-      <button class="go-btn" onclick="calcTax()">CALCULATE TAX →</button>
-      <div class="result-box" id="r-tax">
-        <div class="result-lbl">Total Tax (with 4% Cess)</div>
-        <div class="result-val" id="rv-tax"></div>
-        <div class="result-grid">
-          <div class="rg-item"><div class="rg-val" id="rv-tax-eff"></div><div class="rg-lbl">Effective Rate</div></div>
-          <div class="rg-item"><div class="rg-val" id="rv-tax-hand"></div><div class="rg-lbl">Monthly In-Hand</div></div>
-        </div>
-        <div class="result-note" id="rv-tax-note" style="margin-top:10px"></div>
-      </div>
-    </div>
+    itemsWrap.appendChild(el);
+  });
 
-    <!-- HEALTH -->
-    <div class="
+  block.querySelector(".cat-header").onclick = () => {
+    block.classList.toggle("open");
+  };
+
+  sidebar.appendChild(block);
+});
+
+
+/* ─────────────────────────────
+   PANEL SWITCHING
+─────────────────────────────*/
+function openPanel(id, el){
+  document.querySelectorAll(".calc-panel").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+
+  document.getElementById(id).classList.add("active");
+  el.classList.add("active");
+}
+
+
+/* ─────────────────────────────
+   EMI
+─────────────────────────────*/
+function calcEMI(){
+  let P = +emi-p.value;
+  let r = +emi-r.value/12/100;
+  let n = +emi-t.value*12;
+
+  let emi = P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+  let total = emi*n;
+  let interest = total - P;
+
+  rv-emi.innerText = "₹"+emi.toFixed(0);
+  rv-emi-total.innerText = "₹"+total.toFixed(0);
+  rv-emi-int.innerText = "₹"+interest.toFixed(0);
+
+  r-emi.classList.add("show");
+}
+
+
+/* ─────────────────────────────
+   SIP
+─────────────────────────────*/
+function calcSIP(){
+  let m = +sip-m.value;
+  let r = +sip-r.value/12/100;
+  let n = +sip-t.value*12;
+
+  let fv = m*((Math.pow(1+r,n)-1)/r)*(1+r);
+
+  let invested = m*n;
+  let gain = fv - invested;
+
+  rv-sip.innerText = "₹"+fv.toFixed(0);
+  rv-sip-inv.innerText = "₹"+invested;
+  rv-sip-gain.innerText = "₹"+gain.toFixed(0);
+
+  r-sip.classList.add("show");
+}
+
+
+/* ─────────────────────────────
+   LOAN INTEREST
+─────────────────────────────*/
+function calcLI(){
+  let p = +li-p.value;
+  let r = +li-r.value/100;
+  let t = +li-t.value;
+
+  let interest,total;
+
+  if(li-type.value==="s"){
+    interest = p*r*t;
+    total = p + interest;
+  } else {
+    total = p*Math.pow(1+r,t);
+    interest = total - p;
+  }
+
+  rv-li-int.innerText = "₹"+interest.toFixed(0);
+  rv-li-total.innerText = "₹"+total.toFixed(0);
+
+  r-loan.classList.add("show");
+}
+
+
+/* ─────────────────────────────
+   GST
+─────────────────────────────*/
+function calcGST(){
+  let a = +gst-a.value;
+  let r = +gst-r.value/100;
+
+  let pre, tax, final;
+
+  if(gst-m.value==="add"){
+    tax = a*r;
+    final = a + tax;
+    pre = a;
+  } else {
+    pre = a/(1+r);
+    tax = a - pre;
+    final = a;
+  }
+
+  rv-gst-pre.innerText = "₹"+pre.toFixed(2);
+  rv-gst-tax.innerText = "₹"+tax.toFixed(2);
+  rv-gst-post.innerText = "₹"+final.toFixed(2);
+
+  r-gst.classList.add("show");
+}
+
+
+/* ─────────────────────────────
+   LOVE CALC
+─────────────────────────────*/
+function calcLove(){
+  let score = Math.floor(Math.random()*101);
+
+  love-score.innerText = score+"%";
+  love-bar.style.width = score+"%";
+
+  r-love.classList.add("show");
+}
+
+
+/* ─────────────────────────────
+   AGE
+─────────────────────────────*/
+function calcAge(){
+  let dob = new Date(age-dob.value);
+  let today = new Date();
+
+  let years = today.getFullYear() - dob.getFullYear();
+  let months = today.getMonth() - dob.getMonth();
+  let days = today.getDate() - dob.getDate();
+
+  if(days<0){ months--; days+=30; }
+  if(months<0){ years--; months+=12; }
+
+  rv-age.innerText = `${years}y ${months}m ${days}d`;
+  r-age.classList.add("show");
+}
+
+
+/* ─────────────────────────────
+   BMI
+─────────────────────────────*/
+function calcBMI(){
+  let h = +bmi-h.value/100;
+  let w = +bmi-w.value;
+
+  let bmi = w/(h*h);
+
+  rv-bmi.innerText = bmi.toFixed(1);
+  r-bmi.classList.add("show");
+}
+
+
+/* ─────────────────────────────
+   YOUTUBE
+─────────────────────────────*/
+function calcYT(){
+  let views = +yt-v.value;
+  let rpm = +yt-r.value;
+
+  let earnings = views/1000 * rpm;
+
+  rv-yt.innerText = "₹"+earnings.toFixed(0);
+  r-yt.classList.add("show");
+}
+
+
+/* ─────────────────────────────
+   INSTAGRAM
+─────────────────────────────*/
+function calcIG(){
+  let followers = +ig-f.value;
+  let rate = followers * 0.02;
+
+  rv-ig.innerText = "₹"+rate.toFixed(0);
+  r-ig.classList.add("show");
+}
+
+
+/* ─────────────────────────────
+   AI COST
+─────────────────────────────*/
+function calcAI(){
+  let tokens = +ai-t.value;
+  let cost = tokens/1000 * 0.002;
+
+  rv-ai.innerText = "$"+cost.toFixed(4);
+  r-ai.classList.add("show");
+}
+
+
+/* ─────────────────────────────
+   DEFAULT OPEN
+─────────────────────────────*/
+setTimeout(()=>{
+  document.querySelector(".category-block").classList.add("open");
+  document.querySelector(".nav-item").click();
+},300);
+
+</script>
