@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CalcUniverse</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #080810;
+  --surface: #0f0f1a;
+  --card: #14141f;
+  --border: #1e1e30;
+  --text: #eeeeff;
+  --muted: #666688;
+  --r: 14px;
+}
+
+body {
+  background: var(--bg);
+  font-family: 'Outfit', sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── HERO ─── */
+.hero {
+  text-align: center;
+  padding: 56px 24px 36px;
+  position: relative;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, #1a0a3a 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #7c3aed22, #06b6d422);
+  border: 1px solid #7c3aed44;
+  color: #a78bfa;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 99px;
+  margin-bottom: 18px;
+  animation: fadeDown 0.6s ease both;
+}
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 10vw, 6rem);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeDown 0.6s 0.1s ease both;
+}
+.hero p {
+  color: var(--muted);
+  font-size: 1rem;
+  margin-top: 10px;
+  animation: fadeDown 0.6s 0.2s ease both;
+}
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── LAYOUT ─── */
+.app {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 0;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+  min-height: 70vh;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  padding-right: 20px;
+  border-right: 1px solid var(--border);
+}
+
+.category-block {
+  margin-bottom: 8px;
+  opacity: 0;
+  transform: translateX(-30px);
+  animation: slideIn 0.5s ease forwards;
+}
+@keyframes slideIn {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.cat-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px 8px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background 0.2s;
+  user-select: none;
+}
+.cat-header:hover { background: #ffffff08; }
+.cat-icon { font-size: 1rem; }
+.cat-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  flex: 1;
+}
+.cat-arrow {
+  font-size: 0.65rem;
+  color: var(--muted);
+  transition: transform 0.3s;
+}
+.category-block.open .cat-arrow { transform: rotate(90deg); }
+
+.cat-items {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+.category-block.open .cat-items { max-height: 600px; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px 9px 28px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition: all 0.2s;
+  opacity: 0;
+  transform: translateX(-20px);
+  border: 1px solid transparent;
+  margin-bottom: 2px;
+}
+.nav-item.visible {
+  animation: itemSlide 0.35s ease forwards;
+}
+@keyframes itemSlide {
+  to { opacity: 1; transform: translateX(0); }
+}
+.nav-item:hover {
+  background: #ffffff0a;
+  color: var(--text);
+}
+.nav-item.active {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
+}
+.nav-item.active .item-dot { background: var(--active-color, #7c3aed); box-shadow: 0 0 8px var(--active-color, #7c3aed); }
+.item-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.item-emoji { font-size: 1rem; }
+.item-name { flex: 1; }
+
+/* ─── CONTENT ─── */
+.content {
+  padding-left: 32px;
+}
+
+.calc-panel {
+  display: none;
+  animation: panelIn 0.4s cubic-bezier(0.34,1.2,0.64,1) both;
+}
+.calc-panel.active { display: block; }
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ─── PANEL HEADER ─── */
+.panel-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-top: 4px;
+}
+.panel-icon-wrap {
+  width: 56px; height: 56px;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+.panel-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+.panel-desc { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+/* ─── FORM ─── */
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.field input, .field select {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--accent, #7c3aed);
+  box-shadow: 0 0 0 3px var(--accent-glow, #7c3aed22);
+}
+.field select option { background: #1a1a2e; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+/* ─── BUTTON ─── */
+.go-btn {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 6px;
+  position: relative;
+  overflow: hidden;
+}
+.go-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #ffffff22, transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.go-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--btn-glow, #7c3aed44); }
+.go-btn:hover::after { opacity: 1; }
+.go-btn:active { transform: translateY(0); }
+
+/* ─── RESULT ─── */
+.result-box {
+  margin-top: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  display: none;
+}
+.result-box.show { display: block; animation: panelIn 0.4s ease both; }
+.result-lbl { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.result-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--accent, #7c3aed);
+  margin-bottom: 14px;
+}
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.rg-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+}
+.rg-val { font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 600; }
+.rg-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+.result-note { font-size: 0.78rem; color: var(--muted); margin-top: 12px; line-height: 1.6; white-space: pre-line; }
+
+/* ─── STUDENT CALC ─── */
+.s-display {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.8rem;
+  text-align: right;
+  min-height: 60px;
+  color: var(--text);
+  word-break: break-all;
+  margin-bottom: 12px;
+}
+.keypad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.key {
+  padding: 14px 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.key:hover { background: #1e1e35; transform: scale(0.96); }
+.key.op { color: #a78bfa; }
+.key.eq { background: linear-gradient(135deg, #7c3aed, #5b21b6); border-color: transparent; color: #fff; }
+.key.clr { color: #f87171; }
+
+/* ─── LOVE ─── */
+.love-bar-bg { background: var(--card); border-radius: 99px; height: 24px; overflow: hidden; border: 1px solid var(--border); margin-top: 12px; }
+.love-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #ec4899, #f43f5e); transition: width 1s cubic-bezier(0.34,1.56,0.64,1); width: 0; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; font-size: 0.75rem; font-weight: 700; color: #fff; }
+.love-emoji-big { font-size: 2.5rem; text-align: center; margin: 10px 0; animation: pulse 0.8s ease infinite alternate; }
+@keyframes pulse { to { transform: scale(1.2); } }
+
+/* ─── COLORS ─── */
+.theme-finance { --accent: #10b981; --accent-glow: #10b98122; --btn-glow: #10b98144; }
+.theme-finance .go-btn { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
+.theme-finance .panel-icon-wrap { background: #10b98120; }
+
+.theme-health { --accent: #06b6d4; --accent-glow: #06b6d422; --btn-glow: #06b6d444; }
+.theme-health .go-btn { background: linear-gradient(135deg, #06b6d4, #0284c7); color: #fff; }
+.theme-health .panel-icon-wrap { background: #06b6d420; }
+
+.theme-tax { --accent: #f59e0b; --accent-glow: #f59e0b22; --btn-glow: #f59e0b44; }
+.theme-tax .go-btn { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; }
+.theme-tax .panel-icon-wrap { background: #f59e0b20; }
+
+.theme-fun { --accent: #ec4899; --accent-glow: #ec489922; --btn-glow: #ec489944; }
+.theme-fun .go-btn { background: linear-gradient(135deg, #ec4899, #db2777); color: #fff; }
+.theme-fun .panel-icon-wrap { background: #ec489920; }
+
+.theme-creator { --accent: #ff6b35; --accent-glow: #ff6b3522; --btn-glow: #ff6b3544; }
+.theme-creator .go-btn { background: linear-gradient(135deg, #ff6b35, #ea580c); color: #fff; }
+.theme-creator .panel-icon-wrap { background: #ff6b3520; }
+
+.theme-tech { --accent: #84cc16; --accent-glow: #84cc1622; --btn-glow: #84cc1644; }
+.theme-tech .go-btn { background: linear-gradient(135deg, #84cc16, #65a30d); color: #000; }
+.theme-tech .panel-icon-wrap { background: #84cc1620; }
+
+.theme-utility { --accent: #a78bfa; --accent-glow: #a78bfa22; --btn-glow: #a78bfa44; }
+.theme-utility .go-btn { background: linear-gradient(135deg, #7c3aed, #5b21b6); color: #fff; }
+.theme-utility .panel-icon-wrap { background: #7c3aed20; }
+
+/* category colors in sidebar */
+.c-finance .cat-label { color: #10b981; }
+.c-health .cat-label { color: #06b6d4; }
+.c-tax .cat-label { color: #f59e0b; }
+.c-fun .cat-label { color: #ec4899; }
+.c-creator .cat-label { color: #ff6b35; }
+.c-tech .cat-label { color: #84cc16; }
+.c-utility .cat-label { color: #a78bfa; }
+
+.c-finance .cat-icon, .c-finance.open .cat-arrow { color: #10b981; }
+.c-health .cat-icon, .c-health.open .cat-arrow { color: #06b6d4; }
+.c-tax .cat-icon, .c-tax.open .cat-arrow { color: #f59e0b; }
+.c-fun .cat-icon, .c-fun.open .cat-arrow { color: #ec4899; }
+.c-creator .cat-icon, .c-creator.open .cat-arrow { color: #ff6b35; }
+.c-tech .cat-icon, .c-tech.open .cat-arrow { color: #84cc16; }
+.c-utility .cat-icon, .c-utility.open .cat-arrow { color: #a78bfa; }
+
+/* disclaimer */
+.disc { font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 10px; }
+
+/* mobile */
+@media (max-width: 640px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { border-right: none; border-bottom: 1px solid var(--border); padding: 0 0 16px; margin-bottom: 24px; padding-right: 0; }
+  .content { padding-left: 0; }
+  .row2, .row3 { grid-template-columns: 1fr; }
+  .result-grid { grid-template-columns: 1fr; }
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">⚡ All-in-One Calculator Suite</div>
+  <h1>CalcUniverse</h1>
+  <p>14 calculators · 7 categories · One app</p>
+</div>
+
+<div class="app">
+
+  <!-- ═══════════════ SIDEBAR ═══════════════ -->
+  <nav class="sidebar" id="sidebar"></nav>
+
+  <!-- ═══════════════ CONTENT ═══════════════ -->
+  <div class="content">
+
+    <!-- FINANCE -->
+    <div class="calc-panel theme-finance" id="p-emi">
+      <div class="panel-header">
+        <div class="panel-icon-wrap">🏦</div>
+        <div><div class="panel-title">EMI Calculator</div><div class="panel-desc">Monthly loan EMI — Home, Car, Personal</div></div>
+      </div>
+      <div class="row3">
+        <div class="field"><label>Principal (₹)</label><input id="emi-p" type="number" value="500000"></div>
+        <div class="field"><label>Rate % p.a.</label><input id="emi-r" type="number" value="8.5" step="0.1"></div>
+        <div class="field"><label>Tenure (Yrs)</label><input id="emi-t" type="number" value="20"></div>
+      </div>
+      <button class="go-btn" onclick="calcEMI()">CALCULATE EMI →</button>
+      <div class="result-box" id="r-emi">
+        <div class="result-lbl">Monthly EMI</div>
+        <div class="result-val" id="rv-emi"></div>
+        <div class="result-grid">
+          <div class="rg-item"><div class="rg-val" id="rv-emi-total"></div><div class="rg-lbl">Total Paid</div></div>
+          <div class="rg-item"><div class="rg-val" id="rv-emi-int"></div><div class="rg-lbl">Total Interest</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-panel theme-finance" id="p-sip">
+      <div class="panel-header">
+        <div class="panel-icon-wrap">📈</div>
+        <div><div class="panel-title">SIP Calculator</div><div class="panel-desc">Mutual fund SIP wealth projection</div></div>
+      </div>
+      <div class="row3">
+        <div class="field"><label>Monthly SIP (₹)</label><input id="sip-m" type="number" value="5000"></div>
+        <div class="field"><label>Return % p.a.</label><input id="sip-r" type="number" value="12" step="0.5"></div>
+        <div class="field"><label>Duration (Yrs)</label><input id="sip-t" type="number" value="10"></div>
+      </div>
+      <button class="go-btn" onclick="calcSIP()">CALCULATE WEALTH →</button>
+      <div class="result-box" id="r-sip">
+        <div class="result-lbl">Estimated Corpus</div>
+        <div class="result-val" id="rv-sip"></div>
+        <div class="result-grid">
+          <div class="rg-item"><div class="rg-val" id="rv-sip-inv"></div><div class="rg-lbl">Invested</div></div>
+          <div class="rg-item"><div class="rg-val" id="rv-sip-gain"></div><div class="rg-lbl">Wealth Gained</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-panel theme-finance" id="p-loan">
+      <div class="panel-header">
+        <div class="panel-icon-wrap">💳</div>
+        <div><div class="panel-title">Loan Interest</div><div class="panel-desc">Simple & Compound interest calculator</div></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Principal (₹)</label><input id="li-p" type="number" value="100000"></div>
+        <div class="field"><label>Rate % p.a.</label><input id="li-r" type="number" value="10" step="0.1"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Time (Years)</label><input id="li-t" type="number" value="3"></div>
+        <div class="field"><label>Type</label><select id="li-type"><option value="s">Simple Interest</option><option value="c">Compound Interest</option></select></div>
+      </div>
+      <button class="go-btn" onclick="calcLI()">CALCULATE →</button>
+      <div class="result-box" id="r-loan">
+        <div class="result-grid">
+          <div class="rg-item"><div class="rg-val" id="rv-li-int"></div><div class="rg-lbl">Interest Amount</div></div>
+          <div class="rg-item"><div class="rg-val" id="rv-li-total"></div><div class="rg-lbl">Total Payable</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc-panel theme-tax" id="p-eligibility">
+      <div class="panel-header">
+        <div class="panel-icon-wrap">🏠</div>
+        <div><div class="panel-title">Loan Eligibility</div><div class="panel-desc">Max loan amount you qualify for</div></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Monthly Income (₹)</label><input id="el-inc" type="number" value="60000"></div>
+        <div class="field"><label>Existing EMIs (₹)</label><input id="el-emi" type="number" value="0"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Rate % p.a.</label><input id="el-r" type="number" value="8.5" step="0.1"></div>
+        <div class="field"><label>Tenure (Yrs)</label><input id="el-t" type="number" value="20"></div>
+      </div>
+      <button class="go-btn" onclick="calcElig()">CHECK ELIGIBILITY →</button>
+      <div class="result-box" id="r-elig">
+        <div class="result-lbl">Max Loan Amount</div>
+        <div class="result-val" id="rv-elig"></div>
+        <div class="result-note" id="rv-elig-note"></div>
+      </div>
+    </div>
+
+    <!-- GST -->
+    <div class="calc-panel theme-tax" id="p-gst">
+      <div class="panel-header">
+        <div class="panel-icon-wrap">🧾</div>
+        <div><div class="panel-title">GST Calculator</div><div class="panel-desc">Add or remove GST from any amount</div></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Amount (₹)</label><input id="gst-a" type="number" value="1000"></div>
+        <div class="field"><label>GST Slab</label><select id="gst-r"><option value="5">5%</option><option value="12">12%</option><option value="18" selected>18%</option><option value="28">28%</option></select></div>
+      </div>
+      <div class="field"><label>Mode</label><select id="gst-m"><option value="add">Add GST (Ex → Inc)</option><option value="rem">Remove GST (Inc → Ex)</option></select></div>
+      <button class="go-btn" onclick="calcGST()">CALCULATE GST →</button>
+      <div class="result-box" id="r-gst">
+        <div class="result-grid">
+          <div class="rg-item"><div class="rg-val" id="rv-gst-pre"></div><div class="rg-lbl">Pre-GST</div></div>
+          <div class="rg-item"><div class="rg-val" id="rv-gst-tax"></div><div class="rg-lbl">GST Amount</div></div>
+          <div class="rg-item" style="grid-column:span 2"><div class="rg-val" id="rv-gst-post" style="color:var(--accent)"></div><div class="rg-lbl">Final Amount</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAX -->
+    <div class="calc-panel theme-tax" id="p-tax">
+      <div class="panel-header">
+        <div class="panel-icon-wrap">🇮🇳</div>
+        <div><div class="panel-title">Income Tax</div><div class="panel-desc">India FY 2024-25 — Old & New Regime</div></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Annual Income (₹)</label><input id="tx-inc" type="number" value="800000"></div>
+        <div class="field"><label>Regime</label><select id="tx-reg" onchange="toggleDed()"><option value="new">New Regime</option><option value="old">Old Regime</option></select></div>
+      </div>
+      <div class="field" id="ded-field" style="display:none"><label>80C + Deductions (₹)</label><input id="tx-ded" type="number" value="150000"></div>
+      <button class="go-btn" onclick="calcTax()">CALCULATE TAX →</button>
+      <div class="result-box" id="r-tax">
+        <div class="result-lbl">Total Tax (with 4% Cess)</div>
+        <div class="result-val" id="rv-tax"></div>
+        <div class="result-grid">
+          <div class="rg-item"><div class="rg-val" id="rv-tax-eff"></div><div class="rg-lbl">Effective Rate</div></div>
+          <div class="rg-item"><div class="rg-val" id="rv-tax-hand"></div><div class="rg-lbl">Monthly In-Hand</div></div>
+        </div>
+        <div class="result-note" id="rv-tax-note" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <!-- HEALTH -->
+    <div class="
